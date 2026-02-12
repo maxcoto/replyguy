@@ -23,12 +23,17 @@ app.post("/reply", rateLimitReply, async (req, res) => {
   try {
     const { tweetText, authorHandle } = req.body || {};
     if (!tweetText || typeof tweetText !== "string") {
+      console.log("[ReplyGuy] /reply bad request: tweetText required");
       return res.status(400).json({ error: "tweetText required" });
     }
-    const replyText = await generateReply(tweetText.trim(), authorHandle || "");
+    const tweet = tweetText.trim();
+    const author = authorHandle || "";
+    console.log("[ReplyGuy] /reply request:", { tweet: tweet.slice(0, 200) + (tweet.length > 200 ? "…" : ""), author });
+    const replyText = await generateReply(tweet, author);
+    console.log("[ReplyGuy] /reply replyText:", { replyText });
     res.json({ replyText });
   } catch (err) {
-    console.error("/reply", err);
+    console.error("[ReplyGuy] /reply error:", err.message || err);
     res.status(500).json({ error: err.message || "Reply generation failed" });
   }
 });

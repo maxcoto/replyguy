@@ -1,6 +1,6 @@
-/** ReplyGuy background: generate reply, post reply, replied-this-week tracking. */
+/** ReplyGuy background: generate reply, post reply. */
 
-const REPLYGUY_STORAGE_KEYS = ["replyguyBackendUrl", "replyguyRepliedThisWeek"];
+const BACKEND_URL = "http://localhost:3000";
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "REPLYGUY_GENERATE") {
@@ -15,17 +15,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       .catch((err) => sendResponse({ error: err.message }));
     return true;
   }
-  if (message.type === "REPLYGUY_TRACK") {
-    trackRepliedTweet(message.payload).then(() => sendResponse({ ok: true }));
-    return true;
-  }
 });
 
 async function generateReply(payload) {
   const { tweetText, authorHandle } = payload;
-  const stored = await getStored();
-  const backendUrl = (stored.replyguyBackendUrl || "http://localhost:3000").replace(/\/$/, "");
-  const url = `${backendUrl}/reply`;
+  const url = `${BACKEND_URL}/reply`;
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -45,22 +39,14 @@ async function generateReply(payload) {
   return { replyText: (data.replyText || data.reply || "").trim().slice(0, 280) };
 }
 
-async function getStored() {
-  return new Promise((resolve) => {
-    chrome.storage.local.get(REPLYGUY_STORAGE_KEYS, resolve);
-  });
-}
-
 async function handlePostReply(payload) {
   const { text, tweetId, tweetText } = payload;
-  const stored = await getStored();
-  const backendUrl = (stored.replyguyBackendUrl || "http://localhost:3000").replace(/\/$/, "");
 
   if (!tweetId) {
     return { error: "Could not get tweet ID. Post from the tweet page or try again." };
   }
 
-  const postUrl = `${backendUrl}/post-reply`;
+  const postUrl = `${BACKEND_URL}/post-reply`;
   const res = await fetch(postUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -77,19 +63,5 @@ async function handlePostReply(payload) {
     return { error: err || `Post failed: ${res.status}` };
   }
 
-  return { track: true };
-}
-
-async function trackRepliedTweet(payload) {
-  const stored = await getStored();
-  const list = Array.isArray(stored.replyguyRepliedThisWeek) ? stored.replyguyRepliedThisWeek : [];
-  list.push({
-    tweetText: payload.tweetText,
-    authorHandle: payload.authorHandle,
-    replyText: payload.replyText,
-    at: new Date().toISOString(),
-  });
-  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-  const trimmed = list.filter((x) => new Date(x.at).getTime() > weekAgo);
-  await new Promise((r) => chrome.storage.local.set({ replyguyRepliedThisWeek: trimmed }, r));
+  return {};
 }

@@ -3,11 +3,12 @@
   "name": "ReplyGuy",
   "version": "1.0.0",
   "description": "Generate sharp, short replies for X. Crypto/DeFi niche. One-click post.",
-  "permissions": ["storage", "activeTab"],
+  "permissions": ["activeTab"],
   "host_permissions": [
     "https://x.com/*",
     "https://twitter.com/*",
-    "http://localhost:*/*"
+    "http://localhost/*",
+    "http://127.0.0.1/*"
   ],
   "background": {
     "service_worker": "background.js"

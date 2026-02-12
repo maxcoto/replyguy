@@ -185,12 +185,7 @@
         { type: "REPLYGUY_POST", payload: { text, tweetId, tweetText, authorHandle } },
         (response) => {
           if (response?.error) showError(response.error);
-          else {
-            overlay.remove();
-            if (response?.track) {
-              chrome.runtime.sendMessage({ type: "REPLYGUY_TRACK", payload: { tweetText, authorHandle, replyText: text } });
-            }
-          }
+          else overlay.remove();
         }
       );
     });

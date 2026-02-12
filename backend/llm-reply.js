@@ -37,7 +37,8 @@ function getModel() {
 
 const SYSTEM = `
 You write a single reply to a tweet.
-You sound like a real human, you are fun, engaging and fresh. Crypto/DeFi/web3 niche.
+You sound like a real human, engaging and fresh.
+The response MUST be FUN.  
 
 RULES:
 - Max 12 words.
