@@ -1,0 +1,19 @@
+{
+  "name": "replyguy-backend",
+  "version": "1.0.0",
+  "description": "ReplyGuy LLM API and X OAuth/post proxy",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "@langchain/core": "^0.3.0",
+    "@langchain/openai": "^0.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "oauth-1.0a": "^2.2.6"
+  }
+}

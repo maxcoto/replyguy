@@ -1,0 +1,25 @@
+# Env and secrets (use backend/.env; .env.example is committed)
+backend/.env
+.env
+
+# Dependencies
+node_modules/
+backend/node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs and debug
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build / misc
+dist/
+*.tgz

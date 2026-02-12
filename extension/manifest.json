@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "ReplyGuy",
+  "version": "1.0.0",
+  "description": "Generate sharp, short replies for X. Crypto/DeFi niche. One-click post.",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": [
+    "https://x.com/*",
+    "https://twitter.com/*",
+    "http://localhost:*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "ReplyGuy"
+  }
+}

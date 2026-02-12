@@ -1,0 +1,161 @@
+/* ReplyGuy – injected button and modal */
+
+.replyguy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  margin-left: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #1d9bf0;
+  background: transparent;
+  border: 1px solid rgba(29, 155, 240, 0.4);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.replyguy-btn:hover {
+  background: rgba(29, 155, 240, 0.1);
+  color: #1d9bf0;
+}
+
+.replyguy-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.replyguy-btn.loading::after {
+  content: "";
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: replyguy-spin 0.6s linear infinite;
+}
+
+@keyframes replyguy-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Modal overlay */
+.replyguy-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.replyguy-modal {
+  background: #000;
+  border: 1px solid #2f3336;
+  border-radius: 16px;
+  min-width: 360px;
+  max-width: 480px;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.replyguy-modal-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #2f3336;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.replyguy-modal-body {
+  padding: 16px;
+}
+
+.replyguy-modal textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: #e7e9ea;
+  background: #16181c;
+  border: 1px solid #2f3336;
+  border-radius: 8px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.replyguy-modal textarea:focus {
+  outline: none;
+  border-color: #1d9bf0;
+}
+
+.replyguy-word-count {
+  font-size: 12px;
+  color: #71767b;
+  margin-top: 4px;
+}
+
+.replyguy-word-count.over {
+  color: #f4212e;
+}
+
+.replyguy-modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.replyguy-modal-actions button {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 9999px;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s;
+}
+
+.replyguy-copy-btn {
+  background: #1d9bf0;
+  color: #fff;
+}
+
+.replyguy-copy-btn:hover {
+  background: #1a8cd8;
+}
+
+.replyguy-post-btn {
+  background: #1d9bf0;
+  color: #fff;
+}
+
+.replyguy-post-btn:hover {
+  background: #1a8cd8;
+}
+
+.replyguy-post-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.replyguy-close-btn {
+  background: transparent;
+  color: #71767b;
+  border: 1px solid #2f3336;
+}
+
+.replyguy-close-btn:hover {
+  background: #16181c;
+  color: #e7e9ea;
+}
+
+.replyguy-error {
+  font-size: 13px;
+  color: #f4212e;
+  margin-top: 8px;
+}
