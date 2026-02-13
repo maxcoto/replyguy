@@ -13,7 +13,7 @@ const app = express();
 app.use(cors({ origin: true }));
 app.use(express.json());
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT) || 3847;
 
 app.get("/", (req, res) => {
   res.json({ name: "ReplyGuy", ok: true });
@@ -28,6 +28,9 @@ app.post("/reply", rateLimitReply, async (req, res) => {
     }
     const tweet = tweetText.trim();
     const author = authorHandle || "";
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/0b21a966-03fd-4099-b77b-af9471488c27',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'server.js:/reply',message:'reply request',data:{tweetLen:tweet.length,hasNewline:tweet.includes('\n'),hasR:tweet.includes('\r'),preview:tweet.slice(0,80).replace(/\n/g,'¶')},timestamp:Date.now(),hypothesisId:'H1,H2'})}).catch(()=>{});
+    // #endregion
     console.log("[ReplyGuy] /reply request:", { tweet: tweet.slice(0, 200) + (tweet.length > 200 ? "…" : ""), author });
     const replyText = await generateReply(tweet, author);
     console.log("[ReplyGuy] /reply replyText:", { replyText });

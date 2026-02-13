@@ -34,7 +34,7 @@ npm start
 # Open x.com, click ReplyGuy on any tweet, get a reply, then Copy or Post reply
 ```
 
-Backend runs at **http://localhost:3000**. The extension uses that URL by default.
+Backend runs at **http://localhost:3847**. The extension uses that URL by default.
 
 ---
 
@@ -50,7 +50,7 @@ Backend runs at **http://localhost:3000**. The extension uses that URL by defaul
 | `X_API_SECRET` | For posting | OAuth 1.0a consumer secret. |
 | `X_ACCESS_TOKEN` | For posting | User access token (from Keys and tokens). |
 | `X_ACCESS_TOKEN_SECRET` | For posting | User access token secret. |
-| `PORT` | No | Default `3000`. |
+| `PORT` | No | Default `3847`. |
 
 **Posting:** Set `X_API_KEY`, `X_API_SECRET`, `X_ACCESS_TOKEN`, `X_ACCESS_TOKEN_SECRET` in `backend/.env`. The extension posts using these credentials.
 
@@ -115,7 +115,7 @@ Rate limits: 60/min per IP for `/reply`, 20/min for `/suggest-post`.
 
 **No reply / “Extension error”**
 
-- Ensure the backend is running at `http://localhost:3000` and the extension is loaded. Replies are requested by the extension’s background script from that URL.
+- Ensure the backend is running at `http://localhost:3847` and the extension is loaded. Replies are requested by the extension’s background script from that URL.
 
 ---
 

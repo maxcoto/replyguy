@@ -65,10 +65,16 @@ export async function generateReply(tweetText, authorHandle) {
     throw new Error("OPENROUTER_API_KEY is not set. Add it to .env to generate replies.");
   }
 
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/0b21a966-03fd-4099-b77b-af9471488c27',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'llm-reply.js:generateReply',message:'input',data:{tweetLen:(tweetText||'').length,hasNewline:(tweetText||'').includes('\n')},timestamp:Date.now(),hypothesisId:'H2'})}).catch(()=>{});
+  // #endregion
   const normalizedTweet = normalizeTweetText(tweetText);
   const truncatedTweet = truncateForLlm(normalizedTweet);
   const prefix = authorHandle ? `Tweet by ${authorHandle}:\n` : "";
   const userContent = `${prefix}${truncatedTweet}`.trim();
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/0b21a966-03fd-4099-b77b-af9471488c27',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'llm-reply.js:afterNorm',message:'after normalize',data:{normalizedLen:normalizedTweet.length,userContentLen:userContent.length,stillHasNewline:userContent.includes('\n')},timestamp:Date.now(),hypothesisId:'H2,H3'})}).catch(()=>{});
+  // #endregion
   if (!userContent) {
     throw new Error("Tweet text is empty after normalizing.");
   }
@@ -108,6 +114,9 @@ export async function generateReply(tweetText, authorHandle) {
         if (j?.error?.message) errMsg = j.error.message;
         else if (j?.message) errMsg = j.message;
       } catch (_) {}
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/0b21a966-03fd-4099-b77b-af9471488c27',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'llm-reply.js:resNotOk',message:'OpenRouter HTTP error',data:{status:res.status,errMsg:(errMsg||'').slice(0,200)},timestamp:Date.now(),hypothesisId:'H4,H5'})}).catch(()=>{});
+      // #endregion
       console.error("[ReplyGuy] OpenRouter error:", res.status, errMsg);
       throw new Error(errMsg || `OpenRouter error: ${res.status}`);
     }
@@ -126,6 +135,9 @@ export async function generateReply(tweetText, authorHandle) {
       return text;
     }
 
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/0b21a966-03fd-4099-b77b-af9471488c27',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'llm-reply.js:emptyContent',message:'OpenRouter empty',data:{attempt,finish_reason:choice.finish_reason,contentType:typeof choice.message?.content,contentLen:Array.isArray(choice.message?.content)?choice.message?.content.length:0},timestamp:Date.now(),hypothesisId:'H4'})}).catch(()=>{});
+    // #endregion
     if (attempt < 3) {
       console.warn("[ReplyGuy] OpenRouter empty content, retry", attempt, "of 3. finish_reason:", choice.finish_reason);
     } else {

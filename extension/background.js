@@ -1,6 +1,6 @@
 /** ReplyGuy background: generate reply, post reply. */
 
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = "http://localhost:3847";
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "REPLYGUY_GENERATE") {

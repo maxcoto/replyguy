@@ -6,7 +6,7 @@
 
 import "./load-env.js";
 
-const BACKEND = "http://localhost:3000";
+const BACKEND = "http://localhost:3847";
 
 const multiLineTweet = `first line of the tweet
 second line here
